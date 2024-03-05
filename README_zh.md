@@ -49,7 +49,7 @@ width="{{.Width}}" height="{{.Height}}" backgroundcolor="#000000"
 2. 填充模板代码：
 ```gotemplate
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="{{.Width}}" height="{{.Height}}" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
 
   {{range .CSVs}} <layer name="{{.Name}}" width="{{.Width}}" height="{{.Height}}" visible="0">
     <data encoding="csv">
