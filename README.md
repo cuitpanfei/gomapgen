@@ -46,38 +46,38 @@ See `main.go` for all the options.
 
 ## --algo=rogue --width=30 --height=18
 
-![rogue](https://raw.githubusercontent.com/cxong/gomapgen/master/examples/rogue.gif)
+![rogue](./examples/rogue.gif)
 
 ## --algo=village
 
-![village](https://raw.githubusercontent.com/cxong/gomapgen/master/examples/village.gif)
-![village build](https://raw.githubusercontent.com/cxong/gomapgen/master/examples/village_build.gif)
+![village](./examples/village.gif)
+![village build](./examples/village_build.gif)
 
 ## --algo=shop --width=16 --height=13
 
-![shop](https://raw.githubusercontent.com/cxong/gomapgen/master/examples/shop.gif)
-![shop build](https://raw.githubusercontent.com/cxong/gomapgen/master/examples/shop_build.gif)
+![shop](./examples/shop.gif)
+![shop build](./examples/shop_build.gif)
 
 ## --algo=bspinterior --corridorWidth=2
 
-![bspinterior](https://raw.githubusercontent.com/cxong/gomapgen/master/examples/bspinterior.gif)
-![bspinterior build](https://raw.githubusercontent.com/cxong/gomapgen/master/examples/bspinterior_build.gif)
+![bspinterior](./examples/bspinterior.gif)
+![bspinterior build](./examples/bspinterior_build.gif)
 
 ## --algo=bsp --width=24 --height=20
 
-![bsp](https://raw.githubusercontent.com/cxong/gomapgen/master/examples/bsp.png)
+![bsp](./examples/bsp.png)
 
 ## --algo=walk --width=16 --height=16 --iterations=500
 
-![walk](https://raw.githubusercontent.com/cxong/gomapgen/master/examples/walk.gif)
+![walk](./examples/walk.gif)
 
 ## --algo=interior --minroomsize=4 --maxroomsize=8 --width=24 --height=24
 
-![interior](https://raw.githubusercontent.com/cxong/gomapgen/master/examples/interior.png)
+![interior](./examples/interior.png)
 
 ## --algo=cell --width=24 --height=20 --template=kenney
 
-![cell](https://raw.githubusercontent.com/cxong/gomapgen/master/examples/cell.gif)
+![cell](./examples/cell.gif)
 
 # Developer Getting Started
 

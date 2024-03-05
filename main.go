@@ -18,18 +18,18 @@ func main() {
 	template := flag.String("template", "dawnlike", "TMX export template: dawnlike/kenney")
 	width := flag.Int("width", 32, "map width")
 	height := flag.Int("height", 32, "map height")
-	export := flag.Bool("export", true, "enable TMX export")
+	export := flag.Bool("export", false, "enable TMX export")
 	iterations := flag.Int("iterations", 3000, "number of iterations for walk algo")
 	gridWidth := flag.Int("gridwidth", 3, "grid size, for rogue algo")
 	gridHeight := flag.Int("gridheight", 3, "grid size, for rogue algo")
 	minRoomPct := flag.Int("minroompct", 50, "percent of rooms per grid, for rogue algo")
 	maxRoomPct := flag.Int("maxroompct", 100, "percent of rooms per grid, for rogue algo")
 	fillPct := flag.Int("fillpct", 40, "initial fill percent, for cell algo")
-	r1 := flag.Int("r1", 5, "R1 cutoff, for cell algo")
-	r2 := flag.Int("r2", 2, "R2 cutoff, for cell algo")
+	r1 := flag.Int("r1", 8, "R1 cutoff, for cell algo")
+	r2 := flag.Int("r2", 5, "R2 cutoff, for cell algo")
 	reps := flag.Int("reps", 4, "reps, for cell algo")
 	splits := flag.Int("splits", 4, "number of splits for bsp/bspinterior algo")
-	minRoomSize := flag.Int("minroomsize", 5, "minimum room width/height")
+	minRoomSize := flag.Int("minroomsize", 6, "minimum room width/height")
 	maxRoomSize := flag.Int("maxroomsize", 10, "maximum room width/height")
 	connectionIterations := flag.Int(
 		"connectioniterations", 15, "iterations for connection phase for bsp algo")
@@ -59,6 +59,9 @@ func main() {
 	// Iteratively generate and export map
 	imgId := 0
 	exportFunc := func(m_ *gmgmap.Map) {
+		if err := m_.ToTMX(rr2, t, -1); err != nil {
+			panic(err)
+		}
 	}
 	if *export {
 		// Remove existing images

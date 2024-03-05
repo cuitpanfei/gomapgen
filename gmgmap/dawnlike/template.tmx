@@ -150,7 +150,7 @@
  <tileset firstgid="5064" name="Wand" tilewidth="16" tileheight="16">
   <image source="Items/Wand.png" width="128" height="112"/>
  </tileset>
-{{range .CSVs}} <layer name="{{.Name}}" width="{{.Width}}" height="{{.Height}}">
+{{range .CSVs}} <layer name="{{.Name}}" width="{{.Width}}" height="{{.Height}}" visible="0">
   <data encoding="csv">
 {{.Values}}
   </data>

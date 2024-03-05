@@ -9,7 +9,7 @@
  <tileset firstgid="2236" name="Characters" tilewidth="16" tileheight="16" spacing="1">
   <image source="roguelikeChar_transparent.png" width="918" height="203"/>
  </tileset>
-{{range .CSVs}} <layer name="{{.Name}}" width="{{.Width}}" height="{{.Height}}">
+{{range .CSVs}} <layer name="{{.Name}}" width="{{.Width}}" height="{{.Height}}" visible="0">
   <data encoding="csv">
 {{.Values}}
   </data>

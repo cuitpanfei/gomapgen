@@ -24,38 +24,38 @@ type Map struct {
 
 // Tile types
 const (
-	nothing    = ' '
-	floor      = 'f'
-	floor2     = 'F'
-	road       = 'r'
-	road2      = 'R'
-	wall       = 'w'
-	wall2      = 'W'
-	room       = '.'
-	room2      = '#'
-	door       = '+'
-	doorLocked = 'x'
-	stairsUp   = '<'
-	stairsDown = '>'
-	tree       = 'T'
-	grass      = 'g'
+	nothing    = ' ' // 空白
+	floor      = 'f' // 地板
+	floor2     = 'F' // 第二种地板
+	road       = 'r' // 路
+	road2      = 'R' // 第二种路
+	wall       = 'w' // 墙
+	wall2      = 'W' // 第二种墙
+	room       = '.' // 房间内
+	room2      = '#' // 走廊
+	door       = '+' // 门
+	doorLocked = 'x' // 上锁的门
+	stairsUp   = '<' // 进入地图的位置
+	stairsDown = '>' // 离开地图的位置
+	tree       = 'T' // 树
+	grass      = 'g' // 草地
 
 	// flavour
-	sign       = 's'
-	hanging    = 'h' // stuff that goes on indoor walls
-	window     = 'o'
-	counter    = '_'
-	shopkeeper = 'A'
-	shelf      = 'S'
-	stock      = ')'
-	table      = 't'
-	chair      = 'c'
-	rug        = '~'
-	pot        = '{'
-	assistant  = 'a'
-	player     = '@'
-	flower     = 'v'
-	key        = '('
+	sign       = 's' // 签（名），署（名）；签署，签字
+	hanging    = 'h' // 室内墙壁上的东西
+	window     = 'o' // 窗户
+	counter    = '_' // 柜台
+	shopkeeper = 'A' // 店员
+	shelf      = 'S' // （通常指固定在墙上或橱柜中的）搁板，架子。
+	stock      = ')' // （商店的）库存，存货
+	table      = 't' // 桌子
+	chair      = 'c' // 椅子
+	rug        = '~' // 小地毯;垫子
+	pot        = '{' // 罐，壶
+	assistant  = 'a' // 助手；帮手；助理
+	player     = '@' // 玩家
+	flower     = 'v' // 花
+	key        = '(' // 钥匙
 )
 
 // NewMap - create a new Map for a certain size

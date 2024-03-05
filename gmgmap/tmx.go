@@ -26,12 +26,12 @@ type csvExport struct {
 type TMXTemplate struct {
 	path       string
 	background string
-	// Arrays of tile ids (16);
-	// first is centre,
-	// then 8 tiles from top clockwise,
-	// then h/v,
-	// then 4 end tiles from top clockwise,
-	// then isolated tile
+	// 瓦片 ID 数组（16）；
+	// 首先是中心点、
+	// 然后从顶部顺时针方向依次为 8 个瓦片、
+	// 然后是 h/v、
+	// 然后是自上而下顺时针方向的 4 个末端瓦片、
+	// 然后是孤立的瓦片
 	floorIDs [16]string
 	//floor2IDs  [16]string
 	roadIDs     [16]string
@@ -128,8 +128,8 @@ func (m Map) ToTMX(rr *rand.Rand, tmxTemplate *TMXTemplate, imgId int) error {
 		return err
 	}
 
+	tmxTemplate.CSVs = make([]csvExport, 0)
 	populateTemplate(rr, m, tmxTemplate)
-
 	// Generate TMX
 	// Use template path as template name
 	t, err := template.ParseFiles(path.Join(baseDir, "template.tmx"))
@@ -150,7 +150,7 @@ func (m Map) ToTMX(rr *rand.Rand, tmxTemplate *TMXTemplate, imgId int) error {
 		rasterizer := ""
 		switch runtime.GOOS {
 		case "windows":
-			rasterizer = "/c/Program Files/Tiled/tmxrasterizer.exe"
+			rasterizer = "D:\\app\\Tiled\\tmxrasterizer.exe"
 		case "darwin":
 			rasterizer = "/Applications/Tiled.app/Contents/MacOS/tmxrasterizer"
 		default:
@@ -183,9 +183,10 @@ func populateTemplate(rr *rand.Rand, m Map, tmp *TMXTemplate) {
 			for x := 0; x < l.Width; x++ {
 				tile := l.getTile(x, y)
 				var tileIDs *[16]string
+				currentIndex := x + y*l.Width
 				switch tile {
 				case nothing:
-					xt[x+y*l.Width] = "0"
+					xt[currentIndex] = "0"
 				case floor:
 					tileIDs = &tmp.floorIDs
 				//case floor2:
@@ -208,9 +209,9 @@ func populateTemplate(rr *rand.Rand, m Map, tmp *TMXTemplate) {
 						left = wallLayer.getTile(x-1, y)
 					}
 					if IsWall(left) || IsDoor(left) {
-						xt[x+y*l.Width] = tmp.doorH
+						xt[currentIndex] = tmp.doorH
 					} else {
-						xt[x+y*l.Width] = tmp.doorV
+						xt[currentIndex] = tmp.doorV
 					}
 				case doorLocked:
 					left := wall
@@ -218,29 +219,29 @@ func populateTemplate(rr *rand.Rand, m Map, tmp *TMXTemplate) {
 						left = wallLayer.getTile(x-1, y)
 					}
 					if IsWall(left) || IsDoor(left) {
-						xt[x+y*l.Width] = tmp.doorLockedH
+						xt[currentIndex] = tmp.doorLockedH
 					} else {
-						xt[x+y*l.Width] = tmp.doorLockedV
+						xt[currentIndex] = tmp.doorLockedV
 					}
 				case stairsUp:
-					xt[x+y*l.Width] = tmp.stairsUp
+					xt[currentIndex] = tmp.stairsUp
 				case stairsDown:
-					xt[x+y*l.Width] = tmp.stairsDown
+					xt[currentIndex] = tmp.stairsDown
 				case tree:
-					xt[x+y*l.Width] = get16Tile2(m, x, y, tile, &tmp.treeIDs)
+					xt[currentIndex] = get16Tile2(m, x, y, tile, &tmp.treeIDs)
 				case grass:
 					tileIDs = &tmp.grassIDs
 				case sign:
 					// choose from on-wall sign or stand-alone sign
 					if IsWall(wallLayer.getTile(x, y)) {
-						xt[x+y*l.Width] = tmp.wallSignIDs[rr.Intn(len(tmp.wallSignIDs))]
+						xt[currentIndex] = tmp.wallSignIDs[rr.Intn(len(tmp.wallSignIDs))]
 					} else {
-						xt[x+y*l.Width] = tmp.signIDs[rr.Intn(len(tmp.signIDs))]
+						xt[currentIndex] = tmp.signIDs[rr.Intn(len(tmp.signIDs))]
 					}
 				case hanging:
-					xt[x+y*l.Width] = tmp.hangingIDs[rr.Intn(len(tmp.hangingIDs))]
+					xt[currentIndex] = tmp.hangingIDs[rr.Intn(len(tmp.hangingIDs))]
 				case window:
-					xt[x+y*l.Width] = tmp.windowIDs[rr.Intn(len(tmp.windowIDs))]
+					xt[currentIndex] = tmp.windowIDs[rr.Intn(len(tmp.windowIDs))]
 				case counter:
 					top := y > 0 && l.getTile(x, y-1) == counter
 					bottom := y < l.Height-1 && l.getTile(x, y+1) == counter
@@ -248,53 +249,55 @@ func populateTemplate(rr *rand.Rand, m Map, tmp *TMXTemplate) {
 					right := x < l.Width-1 && l.getTile(x+1, y) == counter
 					switch {
 					case left && right:
-						xt[x+y*l.Width] = tmp.counterHIDs[1]
+						xt[currentIndex] = tmp.counterHIDs[1]
 					case top && bottom:
-						xt[x+y*l.Width] = tmp.counterVIDs[1]
+						xt[currentIndex] = tmp.counterVIDs[1]
 					case left:
-						xt[x+y*l.Width] = tmp.counterHIDs[2]
+						xt[currentIndex] = tmp.counterHIDs[2]
 					case right:
-						xt[x+y*l.Width] = tmp.counterHIDs[0]
+						xt[currentIndex] = tmp.counterHIDs[0]
 					case top:
-						xt[x+y*l.Width] = tmp.counterVIDs[2]
+						xt[currentIndex] = tmp.counterVIDs[2]
 					case bottom:
-						xt[x+y*l.Width] = tmp.counterVIDs[0]
+						xt[currentIndex] = tmp.counterVIDs[0]
 					}
 				case shopkeeper:
-					xt[x+y*l.Width] = tmp.shopkeeperIDs[rr.Intn(len(tmp.shopkeeperIDs))]
+					xt[currentIndex] = tmp.shopkeeperIDs[rr.Intn(len(tmp.shopkeeperIDs))]
 				case shelf:
-					xt[x+y*l.Width] = tmp.shelfID
+					xt[currentIndex] = tmp.shelfID
 				case stock:
-					xt[x+y*l.Width] = tmp.stockIDs[rr.Intn(len(tmp.stockIDs))]
+					xt[currentIndex] = tmp.stockIDs[rr.Intn(len(tmp.stockIDs))]
 				case table:
-					xt[x+y*l.Width] = tmp.tableID
+					xt[currentIndex] = tmp.tableID
 				case chair:
 					// Find the table to face
 					if x == 0 || l.getTile(x-1, y) == table {
-						xt[x+y*l.Width] = tmp.chairIDs[1]
+						xt[currentIndex] = tmp.chairIDs[1]
 					} else {
-						xt[x+y*l.Width] = tmp.chairIDs[0]
+						xt[currentIndex] = tmp.chairIDs[0]
 					}
 				case rug:
 					tileIDs = &tmp.rugIDs
 				case pot:
-					xt[x+y*l.Width] = tmp.potIDs[rr.Intn(len(tmp.potIDs))]
+					xt[currentIndex] = tmp.potIDs[rr.Intn(len(tmp.potIDs))]
 				case assistant:
-					xt[x+y*l.Width] = tmp.assistantIDs[rr.Intn(len(tmp.assistantIDs))]
+					xt[currentIndex] = tmp.assistantIDs[rr.Intn(len(tmp.assistantIDs))]
 				case player:
-					xt[x+y*l.Width] = tmp.playerIDs[rr.Intn(len(tmp.playerIDs))]
+					xt[currentIndex] = tmp.playerIDs[rr.Intn(len(tmp.playerIDs))]
 				case flower:
-					xt[x+y*l.Width] = tmp.flowerIDs[rr.Intn(len(tmp.flowerIDs))]
+					xt[currentIndex] = tmp.flowerIDs[rr.Intn(len(tmp.flowerIDs))]
 				case key:
-					xt[x+y*l.Width] = tmp.keyIDs[rr.Intn(len(tmp.keyIDs))]
+					xt[currentIndex] = tmp.keyIDs[rr.Intn(len(tmp.keyIDs))]
 				default:
 					fmt.Println("Unhandled tile", tile)
 					panic(tile)
 				}
 				if tileIDs != nil {
-					xt[x+y*l.Width] = get16Tile(m, x, y, tile, tileIDs)
+					xt[currentIndex] = get16Tile(m, x, y, tile, tileIDs)
 				}
+				//fmt.Printf("%4s,", xt[currentIndex])
 			}
+			//fmt.Println("")
 		}
 		return csvExport{l.Name, l.Width, l.Height,
 			arrayToCSV(xt, l.Width, l.Height)}
@@ -307,8 +310,11 @@ func populateTemplate(rr *rand.Rand, m Map, tmp *TMXTemplate) {
 	tmp.CSVs = append(tmp.CSVs,
 		csvExport{"Background", m.Width, m.Height,
 			arrayToCSV(backArr, m.Width, m.Height)})
+
 	for _, l := range m.Layers {
-		tmp.CSVs = append(tmp.CSVs, makeCSV(l, m.Layer("Structures")))
+		if l.Name != "" {
+			tmp.CSVs = append(tmp.CSVs, makeCSV(l, m.Layer("Structures")))
+		}
 	}
 }
 
