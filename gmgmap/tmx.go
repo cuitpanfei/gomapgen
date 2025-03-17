@@ -308,7 +308,9 @@ func populateTemplate(rr *rand.Rand, m Map, tmp *TMXTemplate) {
 		csvExport{"Background", m.Width, m.Height,
 			arrayToCSV(backArr, m.Width, m.Height)})
 	for _, l := range m.Layers {
-		tmp.CSVs = append(tmp.CSVs, makeCSV(l, m.Layer("Structures")))
+		if l.Name != "" {
+			tmp.CSVs = append(tmp.CSVs, makeCSV(l, m.Layer("Structures")))
+		}
 	}
 }
 
